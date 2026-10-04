@@ -1,0 +1,5 @@
+<section class="container py-5"><h1 class="sec">Mass & Service Schedule</h1><div class="row g-3">
+{% for s in items %}<div class="col-md-6"><div class="box h-100"><div class="d-flex justify-content-between"><h4>{{ s.date.strftime('%A, %d %b %Y') if s.date }}</h4><span class="badge bg-brand align-self-start">{{ s.language }}</span></div>
+<p class="mb-1"><i class="bi bi-clock acc"></i> <b>Time:</b> {{ s.time }}</p><p class="mb-1"><i class="bi bi-person acc"></i> <b>Priest:</b> {{ s.priest }}</p><p class="mb-1"><i class="bi bi-geo-alt acc"></i> <b>Venue:</b> {{ s.venue }}</p><p class="mb-1"><i class="bi bi-chat-quote acc"></i> <b>Topic:</b> {{ s.topic }}</p>
+{% if s.file %}<a class="btn btn-sm btn-brand mt-2" href="{{ up(s.file) }}" target="_blank">View PDF</a> <a class="btn btn-sm btn-outline-info mt-2" href="{{ up(s.file) }}?dl=1">Download</a>{% endif %}</div></div>
+{% else %}<p class="text-muted">Schedule will be posted soon.</p>{% endfor %}</div></section>

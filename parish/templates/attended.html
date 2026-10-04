@@ -1,0 +1,8 @@
+{% extends 'base.html' %}{% block c %}<section class="container py-5" style="max-width:680px"><h1 class="sec">Attended</h1>
+{% if s %}<div class="box mb-4"><h4>Sunday {{ s.date.strftime('%d %B %Y') }}</h4>
+{% if cur %}<div class="alert alert-info mb-0"><i class="bi bi-lock"></i> Recorded as <b>{{ cur.status }}</b>{% if cur.church_id %} at <b>{{ cn.get(cur.church_id) }}</b>{% endif %}. This cannot be changed.</div>
+{% else %}<p class="text-muted"><b>Present</b> = I attended church. <b>Absent</b> = I did not attend church. <b>Once submitted it cannot be reversed.</b></p>
+<form method="post" onsubmit="return confirm('Submit? This cannot be changed later.')"><select class="form-select mb-3" name="church_id"><option value="">Church attended (required if Present)</option>{% for c in churches %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select>
+<button name="status" value="Present" class="btn btn-brand me-2"><i class="bi bi-check-lg"></i> Present</button><button name="status" value="Absent" class="btn btn-outline-info"><i class="bi bi-x-lg"></i> Absent</button></form>{% endif %}</div>
+{% else %}<div class="box mb-4">Attendance is closed. It opens on Sundays.</div>{% endif %}
+<h5>My history</h5><div class="box p-0">{% for d,st,ci in mine %}<div class="d-flex justify-content-between p-3 border-bottom"><span>{{ d }} {{ '· '~cn.get(ci) if ci }}</span><b>{{ st }}</b></div>{% endfor %}</div></section>{% endblock %}

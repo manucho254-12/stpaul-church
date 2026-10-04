@@ -1,0 +1,3 @@
+{% extends 'base.html' %}{% block c %}<section class="container py-5" style="max-width:720px"><h1 class="sec">Notifications</h1>
+{% for i,t,m,h in items %}<a class="box d-flex gap-3 mb-3 text-decoration-none" href="{{ url_for('home') }}{{ h }}"><i class="bi bi-{{ i }} fs-3 acc"></i><div><b class="text-reset">{{ t }}</b><div class="text-muted">{{ m[:120] }}</div></div></a>
+{% else %}<div class="box text-muted"><i class="bi bi-bell-slash"></i> You're all caught up. Nothing new.</div>{% endfor %}</section>{% endblock %}

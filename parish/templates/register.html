@@ -1,0 +1,8 @@
+{% extends 'base.html' %}{% block c %}<section class="container py-5" style="max-width:680px"><div class="box"><div class="text-center mb-3">{% with cls='lg' %}{% include '_logo.html' %}{% endwith %}<div class="fw-semibold mt-1">{{ S.church_name }}</div></div><h2>Create Account</h2><form method="post" class="row g-3">
+<div class="col-6"><input class="form-control" name="first" placeholder="First name" required></div><div class="col-6"><input class="form-control" name="second" placeholder="Second name" required></div>
+<div class="col-md-6"><input class="form-control" name="username" placeholder="Username (for login)" required></div><div class="col-md-6"><input class="form-control" name="phone" placeholder="Phone number" required></div>
+<div class="col-12"><input class="form-control" type="email" name="email" placeholder="Email (optional — for notifications & password reset)"></div>
+<div class="col-6"><select class="form-select" name="church_id" required><option value="">Select church</option>{% for c in churches %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select></div>
+<div class="col-6"><select class="form-select" name="ministry">{% for m in ministries %}<option>{{ m }}</option>{% endfor %}</select></div>
+<div class="col-6"><input class="form-control" type="password" name="password" placeholder="Password" required minlength="6"></div><div class="col-6"><input class="form-control" type="password" name="confirm" placeholder="Confirm password" required></div>
+<div class="col-12"><button class="btn btn-brand w-100">Register</button></div></form></div></section>{% endblock %}

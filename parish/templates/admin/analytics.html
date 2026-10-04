@@ -1,0 +1,9 @@
+{% extends 'admin/base.html' %}{% block c %}<h2 class="sec">Analytics</h2><div class="row g-3">
+<div class="col-lg-6"><div class="box"><h6>Tithes & Offerings by Church</h6><canvas id="b"></canvas></div></div><div class="col-lg-6"><div class="box"><h6>Contributions over Time</h6><canvas id="l"></canvas></div></div>
+<div class="col-lg-8"><div class="box"><h6>Present vs Absent per Sunday</h6><canvas id="a"></canvas></div></div><div class="col-lg-4"><div class="box"><h6>Present by Church Attended</h6><canvas id="c"></canvas></div></div></div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script><script>
+const d={{ d|tojson }},col=['#4cc9f0','#f77f00','#2ec4b6','#e9c46a','#b392f0','#ef476f'];Chart.defaults.color='#9fb0c7';
+new Chart(b,{type:'bar',data:{labels:d.churches,datasets:[{label:'Tithe',data:d.tithe,backgroundColor:'#4cc9f0'},{label:'Offering',data:d.offering,backgroundColor:'#f77f00'}]}});
+new Chart(l,{type:'line',data:{labels:d.months,datasets:Object.entries(d.line).map(([n,v],i)=>({label:n,data:v,borderColor:col[i%6],tension:.3}))}});
+new Chart(a,{type:'bar',data:{labels:d.att.map(x=>x[0]),datasets:[{label:'Present',data:d.att.map(x=>x[1]),backgroundColor:'#2ec4b6'},{label:'Absent',data:d.att.map(x=>x[2]),backgroundColor:'#ef476f'}]}});
+new Chart(c,{type:'doughnut',data:{labels:d.ac_l,datasets:[{data:d.ac_v,backgroundColor:col}]}});</script>{% endblock %}

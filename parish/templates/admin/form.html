@@ -1,0 +1,14 @@
+{% extends 'admin/base.html' %}{% block c %}<h2 class="sec">{{ title }}</h2><div class="box"><form method="post" enctype="multipart/form-data" class="row g-3">
+{% for f in fields %}{% set v = o.__getattribute__(f[0]) %}<div class="col-md-{{ 12 if f[2]=='area' else 6 }}"><label class="form-label fw-semibold">{{ f[1] }}</label>
+{% if f[2]=='area' %}<textarea class="form-control" rows="4" name="{{ f[0] }}">{{ v or '' }}</textarea>
+{% elif f[2]=='select' %}<select class="form-select" name="{{ f[0] }}">{% for c in f[3] %}{% set pp = c.split('|') %}<option value="{{ pp[0] }}" {{ 'selected' if v==pp[0] }}>{{ pp[-1] }}</option>{% endfor %}</select>
+{% elif f[2]=='church' %}<select class="form-select" name="{{ f[0] }}"><option value="">-- select --</option>{% for c in churches %}<option value="{{ c.id }}" {{ 'selected' if v==c.id }}>{{ c.name }}</option>{% endfor %}</select>
+{% elif f[2]=='file' %}<input class="form-control" type="file" name="{{ f[0] }}">{% if v %}<small class="text-muted">Current: <a href="{{ up(v) }}" target="_blank">{{ v }}</a> (upload to replace)</small>{% endif %}
+{% elif f[2]=='photo' %}<div><input class="form-control photo-in" type="file" accept="image/*">{% if v %}<img src="{{ up(v) }}" class="thumb mt-2">{% endif %}<div class="pv mt-2" style="max-width:360px"></div><input type="hidden" class="pd" name="{{ f[0] }}_data"><small class="text-muted">Choose a photo, then drag the square to frame the face.</small></div>
+{% elif f[2]=='bool' %}<div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="{{ f[0] }}" {{ 'checked' if v }}></div>
+{% else %}<input class="form-control" name="{{ f[0] }}" value="{{ v if v is not none else '' }}" type="{{ {'date':'date','time':'time','num':'number'}.get(f[2],'text') }}" step="any">{% endif %}</div>{% endfor %}
+<div class="col-12"><button class="btn btn-brand"><i class="bi bi-save"></i> Save</button> {% if back %}<a class="btn btn-outline-info" href="{{ back }}">Cancel</a>{% endif %}</div></form></div>
+<script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js"></script><script>
+document.querySelectorAll('.photo-in').forEach(i=>{let cr;const p=i.parentElement,b=p.querySelector('.pv'),h=p.querySelector('.pd');
+i.onchange=()=>{const f=i.files[0];if(!f)return;b.innerHTML='<img style="max-width:100%">';const im=b.firstChild;im.src=URL.createObjectURL(f);cr&&cr.destroy();
+cr=new Cropper(im,{aspectRatio:1,viewMode:1,autoCropArea:.7,crop(){h.value=cr.getCroppedCanvas({width:500,height:500}).toDataURL('image/jpeg',.9)}})}});</script>{% endblock %}

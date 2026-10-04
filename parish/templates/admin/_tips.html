@@ -1,0 +1,1 @@
+{% for t in tips[:limit] %}<div class="box tip {{ t.level }} mb-2 d-flex gap-3 align-items-start"><i class="bi bi-{{ t.icon }} fs-4 acc"></i><div class="flex-fill">{{ t.text }}</div>{% if t.link %}<a class="btn btn-sm btn-outline-info" href="{{ t.link }}">Open</a>{% endif %}</div>{% endfor %}

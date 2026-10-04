@@ -1,0 +1,11 @@
+{% extends 'admin/base.html' %}{% block c %}<h2 class="sec">Tithes & Offerings</h2>
+<div class="alert alert-info"><i class="bi bi-info-circle"></i> Record the tithe and offering for each Sunday, then take the money to the parish office. It is <b>counted in the system only after the parish confirms it has arrived</b>.</div>
+<div class="box mb-4"><h5>Record this Sunday</h5><form method="post" class="row g-3"><div class="col-md-3"><label class="form-label">Sunday date</label><input class="form-control" type="date" name="date" value="{{ last }}" max="{{ today }}" required></div>
+<div class="col-md-3"><label class="form-label">Tithe (KES)</label><input class="form-control" type="number" name="tithe" min="0" step="any" value="0"></div><div class="col-md-3"><label class="form-label">Offering (KES)</label><input class="form-control" type="number" name="offering" min="0" step="any" value="0"></div>
+<div class="col-md-3"><label class="form-label">Note (optional)</label><input class="form-control" name="note" maxlength="255"></div><div class="col-12"><button class="btn btn-brand"><i class="bi bi-save"></i> Record</button></div></form></div>
+<div class="box table-responsive"><table class="table align-middle"><thead><tr><th>Sunday</th><th>Tithe</th><th>Offering</th><th>Status</th><th></th></tr></thead><tbody>
+{% for r in rows %}<tr><td>{{ r.date }}</td><td>{{ '{:,.0f}'.format(r.tithe or 0) }}</td><td>{{ '{:,.0f}'.format(r.offering or 0) }}</td>
+<td>{% if r.status=='pending' %}<span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> Waiting for parish to confirm</span>{% elif r.status=='confirmed' %}<span class="badge bg-success"><i class="bi bi-check-circle"></i> Arrived {{ r.confirmed_on }}</span>{% else %}<span class="badge bg-danger">Rejected</span>{% endif %}</td>
+<td>{% if r.status=='pending' %}<form method="post" action="/admin/church/contributions/{{ r.id }}/delete" onsubmit="return confirm('Delete this report?')"><button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button></form>{% endif %}</td></tr>
+{% else %}<tr><td colspan="5" class="text-muted">Nothing recorded yet.</td></tr>{% endfor %}</tbody></table></div>
+<p class="text-muted mt-2">Confirmed so far: <b>KES {{ '{:,.0f}'.format(confirmed) }}</b></p>{% endblock %}

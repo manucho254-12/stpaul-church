@@ -1,0 +1,4 @@
+<section class="container py-5"><h1 class="sec">About Our Church</h1><div class="row g-4">
+<div class="col-md-6"><div class="box h-100"><h3><i class="bi bi-bullseye acc"></i> Our Mission</h3><p>{{ S.mission }}</p></div></div>
+<div class="col-md-6"><div class="box h-100"><h3><i class="bi bi-eye acc"></i> Our Vision</h3><p>{{ S.vision }}</p></div></div>
+<div class="col-12"><div class="box"><h3><i class="bi bi-flag acc"></i> Our Goals</h3><ul>{% for g in S.goals.split('\n') if g.strip() %}<li>{{ g }}</li>{% endfor %}</ul></div></div></div></section>

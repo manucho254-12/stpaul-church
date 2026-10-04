@@ -1,0 +1,7 @@
+<section class="container py-5"><h1 class="sec">Church Ministries</h1>
+<form class="row g-2 mb-4" action="#ministries"><div class="col-md-5"><select class="form-select" name="church" onchange="this.form.submit()"><option value="">All churches</option>{% for c in churches %}<option value="{{ c.id }}" {{ 'selected' if cid==c.id }}>{{ c.name }}</option>{% endfor %}</select></div>
+<div class="col-md-5"><select class="form-select" name="cat" onchange="this.form.submit()"><option value="">All categories</option>{% for c in cats %}<option {{ 'selected' if cat==c }}>{{ c }}</option>{% endfor %}</select></div></form>
+{% for m in items %}<div class="row align-items-center g-4 mb-5 {{ 'flex-row-reverse' if loop.index is even }}">
+<div class="col-md-5 text-center">{% if m.image %}<img class="mini-img" src="{{ up(m.image) }}" alt="{{ m.name }}">{% endif %}</div>
+<div class="col-md-7"><div class="box"><span class="badge bg-brand fs-6">{{ m.role or m.category }}</span> <span class="badge text-bg-info"><i class="bi bi-building"></i> {{ church_name(m.church_id) if m.church_id else "Whole parish" }}</span><h2 class="mt-2">{{ m.name }}</h2><p class="fs-5 mb-0">{{ m.description }}</p></div></div></div>
+{% else %}<p class="text-muted">No ministries listed here yet.</p>{% endfor %}</section>

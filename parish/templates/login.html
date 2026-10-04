@@ -1,0 +1,3 @@
+{% extends 'base.html' %}{% block c %}<section class="container py-5" style="max-width:440px"><div class="box"><div class="text-center mb-3">{% with cls='lg' %}{% include '_logo.html' %}{% endwith %}<div class="fw-semibold mt-1">{{ S.church_name }}</div></div><h2>{{ 'Admin Login' if admin else 'Login' }}</h2><form method="post" class="d-grid gap-3">
+<input class="form-control" name="login" placeholder="Username or phone number" required><input class="form-control" type="password" name="password" placeholder="Password" required>
+<button class="btn btn-brand">Login</button><a href="{{ url_for('forgot') }}">Forgot password?</a>{% if not admin %}<a href="{{ url_for('register') }}">Create an account</a>{% endif %}</form></div></section>{% endblock %}

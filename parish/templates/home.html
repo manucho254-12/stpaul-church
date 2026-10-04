@@ -1,0 +1,12 @@
+{% extends 'base.html' %}{% block c %}
+<section id="home" class="hero" {% if S.hero_image %}style="background-image:linear-gradient(rgba(10,22,40,.55),rgba(10,22,40,.9)),url('{{ up(S.hero_image) }}')"{% endif %}><div class="container">
+<p class="eyebrow">Welcome to</p><h1>{{ S.church_name }}</h1><p class="lead">{{ S.welcome }}</p><p class="acc"><i class="bi bi-arrow-down-circle"></i> Scroll down to explore</p></div></section>
+<section class="verse"><div class="container"><i class="bi bi-book fs-2 acc"></i><blockquote>“{{ S.verse }}”</blockquote><cite>— {{ S.verse_ref }}</cite></div></section>
+<div id="about">{% include 'sections/about.html' %}</div>
+<div id="services">{% if me %}{% with items=services_l %}{% include 'sections/services.html' %}{% endwith %}{% else %}{% with sec='Mass & Services', icon='calendar-event', perks=[("clock", "Mass and service times"), ("person", "Priest and language of each Mass"), ("geo-alt", "Venue and topic of the day"), ("file-earmark-pdf", "Schedules you can open and download")] %}{% include 'sections/locked.html' %}{% endwith %}{% endif %}</div>
+<div id="announcements">{% if me %}{% with items=ann_l %}{% include 'sections/announcements.html' %}{% endwith %}{% else %}{% with sec='Announcements & Events', icon='megaphone', perks=[("megaphone", "Parish announcements"), ("calendar-check", "Upcoming church events"), ("bell", "Notifications when something new is posted"), ("file-earmark-pdf", "Notices in PDF form")] %}{% include 'sections/locked.html' %}{% endwith %}{% endif %}</div>
+<div id="sermons">{% if me %}{% with items=ser_l %}{% include 'sections/sermons.html' %}{% endwith %}{% else %}{% with sec='Sermons', icon='book', perks=[("translate", "Sermons in English, Kiswahili and Kikamba"), ("eye", "Read the Sunday sermon online"), ("download", "Download sermons as PDF"), ("bell", "Be notified when a new sermon is added")] %}{% include 'sections/locked.html' %}{% endwith %}{% endif %}</div>
+<div id="ministries">{% with items=m_items %}{% include 'sections/ministries.html' %}{% endwith %}</div>
+<div id="donate">{% with items=don_l %}{% include 'sections/donate.html' %}{% endwith %}</div>
+<div id="location">{% include 'sections/location.html' %}</div>
+<div id="contact">{% include 'sections/contact.html' %}</div>{% endblock %}

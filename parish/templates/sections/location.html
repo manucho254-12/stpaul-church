@@ -1,0 +1,6 @@
+<section class="container py-5"><h1 class="sec">Church Location</h1>
+<form class="mb-3" action="#location"><label class="form-label">Select the church you want to visit</label><select class="form-select" name="church" onchange="this.form.submit()">{% for x in churches %}<option value="{{ x.id }}" {{ 'selected' if c and c.id==x.id }}>{{ x.name }}</option>{% endfor %}</select></form>
+<div class="row g-4"><div class="col-lg-7"><div class="ratio ratio-16x9 rounded overflow-hidden"><iframe src="{{ src }}" loading="lazy" allowfullscreen></iframe></div></div>
+<div class="col-lg-5"><div class="box h-100"><h4>{{ c.name if c else S.church_name }}</h4>
+{% if c %}{% for l,v in [('Location',c.location),('P.O. Box',c.pobox),('Chairperson',c.chairperson),('Phone',c.phone),('Email',c.email)] if v %}<p class="mb-1"><b>{{ l }}:</b> {{ v }}</p>{% endfor %}{% endif %}
+<hr><p class="mb-1"><b>County:</b> {{ S.county }}</p><p class="mb-1"><b>Town:</b> {{ S.town }}</p><p class="mb-0"><b>Sub-county:</b> {{ S.subcounty }}</p></div></div></div></section>

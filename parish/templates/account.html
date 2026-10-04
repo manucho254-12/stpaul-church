@@ -1,0 +1,3 @@
+{% extends 'base.html' %}{% block c %}<link href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css" rel="stylesheet">
+<section class="container py-5" style="max-width:760px"><h1 class="sec">My Profile</h1>{% if me.must_change %}<div class="alert alert-warning">Please set your own new password to continue.</div>{% endif %}
+{% set back='' %}{% include '_profile.html' %}</section>{% endblock %}

@@ -1,0 +1,7 @@
+{% extends 'admin/base.html' %}{% block c %}<h2 class="sec">Insights & Tips</h2><p class="text-muted">How to improve {{ ch.name }}, based on attendance, giving and your members.</p>
+{% set limit=50 %}{% include 'admin/_tips.html' %}
+<h5 class="mt-4 mb-2"><i class="bi bi-person-x acc"></i> Members who have not attended church{% if k %} (last {{ k }} Sunday{{ 's' if k>1 }}){% endif %}</h5>
+<div class="box table-responsive"><table class="table align-middle"><thead><tr><th>Member</th><th>Status</th><th>Last present</th><th>Contact</th></tr></thead><tbody>
+{% for m in follow %}<tr><td>{{ m.name }}</td><td><span class="badge bg-{{ 'secondary' if m.state=='No response' else 'warning text-dark' }}">{{ m.state }}</span></td><td>{{ m.last or '—' }}</td>
+<td class="text-nowrap"><a class="btn btn-sm btn-outline-info" href="tel:{{ m.phone }}"><i class="bi bi-telephone"></i></a> {% if m.wa %}<a class="btn btn-sm btn-success" target="_blank" href="{{ m.wa }}"><i class="bi bi-whatsapp"></i></a>{% endif %}</td></tr>
+{% else %}<tr><td colspan="4" class="text-muted">Everyone attended recently.</td></tr>{% endfor %}</tbody></table></div>{% endblock %}

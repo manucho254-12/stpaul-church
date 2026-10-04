@@ -1,0 +1,18 @@
+<section class="container py-5"><h1 class="sec">Sermons</h1>
+<div class="mb-4 d-flex flex-wrap gap-2">{% for l in langs %}<a class="btn {{ 'btn-brand' if l==lang else 'btn-outline-info' }}" href="?lang={{ l }}#sermons">{{ l }}</a>{% endfor %}</div>
+{% for s in items %}<div class="box mb-3"><div class="d-flex flex-wrap justify-content-between align-items-center gap-2"><div><h5 class="mb-1">{{ s.title }}</h5><small class="text-muted">{{ s.date }} · {{ s.language }}</small>
+{% if s.price %}<span class="badge bg-warning text-dark ms-1"><i class="bi bi-cash"></i> KES {{ '%g'|format(s.price) }}</span>{% else %}<span class="badge bg-success ms-1">Free</span>{% endif %}</div>
+<div class="btn-row">{% if s.access %}<a class="btn btn-sm btn-outline-info" href="{{ up(s.file) }}" target="_blank"><i class="bi bi-eye"></i> Read</a> <a class="btn btn-sm btn-brand" href="{{ up(s.file) }}?dl=1"><i class="bi bi-download"></i> Download</a>
+{% elif s.pstatus=='pending' %}<span class="badge text-bg-info p-2"><i class="bi bi-hourglass-split"></i> Awaiting payment</span>
+{% else %}<button class="btn btn-sm btn-brand" data-bs-toggle="collapse" data-bs-target="#pay{{ s.id }}"><i class="bi bi-lock"></i> Pay KES {{ '%g'|format(s.price) }} to read / download</button>{% endif %}</div></div>
+{% if s.pstatus=='pending' %}<div class="stk mt-3" data-pid="{{ s.ppid }}"><div class="stk-icon"><i class="bi bi-phone-vibrate"></i></div><div><h6 class="mb-1">Check your phone</h6>
+<p class="mb-1">An M-Pesa prompt for <b>KES {{ '%g'|format(s.price) }}</b> was sent to <b>{{ s.pphone }}</b>. Enter your <b>M-Pesa PIN</b> to complete the payment.</p>
+<small class="text-muted"><span class="spinner-border spinner-border-sm"></span> Waiting for confirmation. This page updates by itself.</small>
+<form method="post" action="{{ url_for('sermon_check',id=s.id) }}" class="mt-2"><button class="btn btn-sm btn-outline-info"><i class="bi bi-arrow-repeat"></i> Check status now</button></form></div></div>{% endif %}
+{% if not s.access and s.pstatus!='pending' %}<div class="collapse mt-3" id="pay{{ s.id }}">
+{% if s.pstatus in ['failed','rejected'] %}<div class="alert alert-warning py-2"><i class="bi bi-exclamation-triangle"></i> Your last payment was not completed. You can try again.</div>{% endif %}
+<div class="alert alert-info mb-3"><i class="bi bi-phone"></i> Enter your M-Pesa number. You will get a prompt on your phone to pay <b>KES {{ '%g'|format(s.price) }}</b>. Enter your PIN and the sermon unlocks automatically.</div>
+<form method="post" action="{{ url_for('sermon_pay',id=s.id) }}" class="row g-2"><div class="col-sm-8"><input class="form-control" name="phone" placeholder="M-Pesa number e.g. 0712345678" value="{{ me.phone if me }}" required></div>
+<div class="col-sm-4 d-grid"><button class="btn btn-brand"><i class="bi bi-phone-vibrate"></i> Pay with M-Pesa</button></div></form></div>{% endif %}</div>
+{% else %}<p class="text-muted">No {{ lang }} sermons yet.</p>{% endfor %}</section>
+<script>document.querySelectorAll('.stk').forEach(el=>{let n=0;const t=setInterval(async()=>{if(++n>60)return clearInterval(t);try{const r=await fetch('/payment/'+el.dataset.pid+'/status');const j=await r.json();if(j.status!=='pending'){clearInterval(t);location.reload()}}catch(e){}},5000)})</script>

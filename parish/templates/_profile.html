@@ -1,0 +1,17 @@
+<div class="box mb-4"><h5><i class="bi bi-person-circle acc"></i> Profile picture</h5><div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+{% if me.photo %}<img src="{{ up(me.photo) }}" class="avatar-lg" alt="">{% else %}<i class="bi bi-person-circle acc" style="font-size:5rem"></i>{% endif %}
+<div><div class="fw-semibold">{{ me.first }} {{ me.second }}</div><small class="text-muted">@{{ me.username }}</small></div></div>
+<form method="post" action="{{ url_for('account') }}" class="d-grid gap-3" id="pf"><input type="hidden" name="form" value="photo"><input type="hidden" name="back" value="{{ back }}"><input type="hidden" name="photo_data" id="pd">
+<input class="form-control" type="file" id="pi" accept="image/*"><div id="pv" style="max-width:360px"></div><small class="text-muted">Choose a photo, then drag and resize the circle so only your head is inside it.</small>
+<button class="btn btn-brand"><i class="bi bi-save"></i> Save picture</button></form>
+{% if me.photo %}<form method="post" action="{{ url_for('account') }}" class="mt-2"><input type="hidden" name="back" value="{{ back }}"><button name="form" value="remove" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i> Remove picture</button></form>{% endif %}</div>
+{% if me.role!='user' %}<div class="box mb-4"><h5><i class="bi bi-person-badge acc"></i> Username</h5><form method="post" action="{{ url_for('account') }}" class="d-grid gap-3"><input type="hidden" name="form" value="username"><input type="hidden" name="back" value="{{ back }}">
+<input class="form-control" name="username" value="{{ me.username }}" minlength="3" maxlength="30" required><small class="text-muted">You will log in with this username (or your phone number).</small><button class="btn btn-brand"><i class="bi bi-save"></i> Save username</button></form></div>{% endif %}
+<div class="box"><h5><i class="bi bi-key acc"></i> Change password</h5><form method="post" action="{{ url_for('account') }}" class="d-grid gap-3"><input type="hidden" name="form" value="password"><input type="hidden" name="back" value="{{ back }}">
+<input class="form-control" type="password" name="old" placeholder="Current (or temporary) password" required><input class="form-control" type="password" name="new" placeholder="New password" minlength="6" required>
+<input class="form-control" type="password" name="confirm" placeholder="Confirm new password" required><input class="form-control" type="email" name="email" placeholder="Email (optional, for notifications and password reset)" value="{{ me.email or '' }}"><button class="btn btn-brand"><i class="bi bi-save"></i> Save password</button></form></div>
+<script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js"></script><script>
+let cr;const pi=document.getElementById('pi'),pv=document.getElementById('pv'),pd=document.getElementById('pd');
+pi.onchange=()=>{const f=pi.files[0];if(!f)return;pv.innerHTML='<img style="max-width:100%">';const im=pv.firstChild;im.src=URL.createObjectURL(f);cr&&cr.destroy();
+cr=new Cropper(im,{aspectRatio:1,viewMode:1,autoCropArea:.6,crop(){pd.value=cr.getCroppedCanvas({width:400,height:400}).toDataURL('image/jpeg',.9)}})};
+document.getElementById('pf').onsubmit=e=>{if(!pd.value){e.preventDefault();alert('Please choose and crop a photo first.')}};</script>

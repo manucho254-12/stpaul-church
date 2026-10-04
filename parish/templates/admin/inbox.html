@@ -1,0 +1,6 @@
+{% extends 'admin/base.html' %}{% block c %}<h2 class="sec">Inbox</h2>
+{% for m in items %}<div class="box mb-3"><div class="d-flex justify-content-between"><div><b>{{ m.name }}</b> · {{ m.phone }}{% if m.email %} · {{ m.email }}{% endif %}<br><small class="text-muted">{{ m.created }} · {{ m.service }} · {{ m.location }}</small></div>
+<form method="post" action="{{ url_for('inbox_del',id=m.id) }}" onsubmit="return confirm('Delete?')"><button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button></form></div>
+<p class="my-3">{{ m.message }}</p>{% if m.reply %}<p class="acc"><i class="bi bi-reply"></i> {{ m.reply }} <small class="text-muted">({{ m.replied_on }})</small></p>{% endif %}
+<form method="post" action="{{ url_for('reply',id=m.id) }}" class="d-flex gap-2"><input class="form-control" name="reply" placeholder="Write a reply..." required><button class="btn btn-brand">Reply</button></form></div>
+{% else %}<p class="text-muted">No messages.</p>{% endfor %}{% endblock %}

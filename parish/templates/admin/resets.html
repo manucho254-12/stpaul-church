@@ -1,0 +1,7 @@
+{% extends 'admin/base.html' %}{% block c %}<h2 class="sec">Password Resets</h2><p class="text-muted">Members who used "Forgot password" appear here. Generate a temporary password and send it to them (WhatsApp button). They must choose a new password at their next login.</p>
+<div class="box table-responsive"><table class="table align-middle"><thead><tr><th>Date</th><th>Member</th><th>Phone / Email</th><th>Status</th><th>Temporary password</th><th></th></tr></thead><tbody>
+{% for r,u in rows %}<tr><td>{{ r.created }}</td><td>{{ u.first }} {{ u.second }}<br><small class="text-muted">@{{ u.username }}</small></td><td>{{ u.phone }}<br><small class="text-muted">{{ u.email or 'no email' }}</small></td>
+<td><span class="badge bg-{{ 'warning text-dark' if r.status=='pending' else 'success' }}">{{ r.status }}</span></td><td><b>{{ r.temp_pw or '—' }}</b></td>
+<td class="text-nowrap"><form method="post" action="{{ url_for('reset_gen',id=r.id) }}" class="d-inline"><button class="btn btn-sm btn-brand"><i class="bi bi-key"></i> {{ 'Generate' if r.status=='pending' else 'New password' }}</button></form>
+{% if r.temp_pw and wa(u.phone) %}<a class="btn btn-sm btn-success" target="_blank" href="{{ wa(u.phone, 'Hello '~u.first~', your temporary password for '~S.church_name~' is: '~r.temp_pw~' (username: '~u.username~'). Please log in and set a new password.') }}"><i class="bi bi-whatsapp"></i> Send</a>{% endif %}</td></tr>
+{% else %}<tr><td colspan="6" class="text-muted">No reset requests.</td></tr>{% endfor %}</tbody></table></div>{% endblock %}

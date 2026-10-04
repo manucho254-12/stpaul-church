@@ -1,0 +1,7 @@
+{% extends 'admin/base.html' %}{% block c %}<h2 class="sec">Sermon Payments</h2><p class="text-muted">Payments made through PayHero are approved automatically. You can still approve or reject manually.</p>
+<div class="box table-responsive"><table class="table align-middle"><thead><tr><th>Date</th><th>Member</th><th>Sermon</th><th>Amount</th><th>M-Pesa receipt</th><th>Phone</th><th>Status</th><th></th></tr></thead><tbody>
+{% for p,u,s in rows %}<tr><td>{{ p.created }}</td><td>{{ u.first }} {{ u.second }}</td><td>{{ s.title }}</td><td>KES {{ '%g'|format(p.amount or 0) }}</td><td><b>{{ p.code or '—' }}</b></td><td>{{ p.phone }}</td>
+<td><span class="badge bg-{{ {'pending':'warning text-dark','approved':'success','rejected':'danger','failed':'secondary'}[p.status] }}">{{ p.status }}</span></td>
+<td class="text-nowrap">{% if p.status!='approved' %}<form method="post" action="{{ url_for('pay_act',id=p.id,act='approve') }}" class="d-inline"><button class="btn btn-sm btn-brand"><i class="bi bi-check-lg"></i></button></form>{% endif %}
+{% if p.status!='rejected' %}<form method="post" action="{{ url_for('pay_act',id=p.id,act='reject') }}" class="d-inline"><button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg"></i></button></form>{% endif %}</td></tr>
+{% else %}<tr><td colspan="8" class="text-muted">No payments yet.</td></tr>{% endfor %}</tbody></table></div>{% endblock %}

@@ -1,0 +1,5 @@
+{% extends 'admin/base.html' %}{% block c %}<h2 class="sec">{{ 'Member added' if what=='added' else 'Password reset' }}</h2>
+<div class="box" style="max-width:560px"><div class="alert alert-warning"><i class="bi bi-exclamation-triangle"></i> <b>Write this down or send it to the member now.</b> It will not be shown again. They must choose a new password when they first log in.</div>
+<table class="table"><tr><th>Name</th><td>{{ m.first }} {{ m.second }}</td></tr><tr><th>Username</th><td><b>{{ m.username }}</b> (or phone number)</td></tr><tr><th>Temporary password</th><td><b class="fs-4">{{ pw }}</b></td></tr></table>
+{% set w = wa_link(m.phone, 'Hello ' ~ m.first ~ ', your login for ' ~ S.church_name ~ ' - username: ' ~ m.username ~ ', temporary password: ' ~ pw ~ '. Please log in and set a new password.') %}
+{% if w %}<a class="btn btn-success" target="_blank" href="{{ w }}"><i class="bi bi-whatsapp"></i> Send by WhatsApp</a>{% endif %} <a class="btn btn-outline-info" href="/admin/church/members">Back to members</a></div>{% endblock %}

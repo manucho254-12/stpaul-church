@@ -1,0 +1,4 @@
+<section class="container py-5"><h1 class="sec">Events & Announcements</h1>
+{% for a in items %}<div class="box mb-3"><span class="badge bg-brand">{{ a.kind }}</span>{% if a.church_id %} <span class="badge text-bg-info"><i class="bi bi-building"></i> {{ church_name(a.church_id) }}</span>{% endif %} <small class="text-muted">{{ a.created }}</small><h4 class="mt-2">{{ a.title }}</h4>
+<p style="white-space:pre-line">{{ a.body }}</p>{% if a.file %}<a class="btn btn-sm btn-brand" href="{{ up(a.file) }}" target="_blank">Open file</a> <a class="btn btn-sm btn-outline-info" href="{{ up(a.file) }}?dl=1">Download</a>{% endif %}</div>
+{% else %}<p class="text-muted">Nothing posted yet.</p>{% endfor %}</section>
